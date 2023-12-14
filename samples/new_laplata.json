@@ -1,0 +1,22 @@
+{
+  "status": "online",
+  "name": "",
+  "geopoint": {
+    "type": "Point",
+    "coordinates": [
+      -57.95424878597259,
+      -34.92034963774125
+    ]
+  },
+  "address": "null null, Provincia de Buenos Aires",
+  "street": null,
+  "street_number": null,
+  "country_code": "AR",
+  "country": "Argentina",
+  "raw_city": null,
+  "raw_district": "Provincia de Buenos Aires",
+  "raw_region": "La Plata",
+  "raw_subregion": "La Plata",
+  "postal_code": null,
+  "raw_country": "Argentina"
+}

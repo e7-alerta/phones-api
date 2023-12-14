@@ -9,7 +9,7 @@ HEADERS = {
 
 
 def get_phone_by_id(phone_id: str):
-    print("[ phone_api ] get phone by id :", phone_id)
+    # print("[ phone_api ] get phone by id :", phone_id)
     response = requests.get(
         PHONE_URL + "/" + phone_id,
         headers=HEADERS
@@ -32,7 +32,7 @@ def get_phone_by_id(phone_id: str):
 
 
 def update_token(phone_id: str, token: str):
-    print("[ phone_api ] refresh token :", phone_id, token)
+    # print("[ phone_api ] refresh token :", phone_id, token)
     response = requests.patch(
         PHONE_URL + "/" + phone_id,
         headers=HEADERS,
@@ -48,7 +48,7 @@ def update_token(phone_id: str, token: str):
 
 
 def add_new_phone(new_phone: Phone):
-    print("[ phone_api ] a new phone :", new_phone)
+    # print("[ phone_api ] a new phone :", new_phone)
 
     # make payload from new_phone avoid None values
     payload = {}

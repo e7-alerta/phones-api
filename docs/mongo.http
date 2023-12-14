@@ -1,0 +1,43 @@
+
+
+
+# curl -X POST 'https://realm.mongodb.com/api/client/v2.0/app/data-xzxhz/auth/providers/local-userpass/login' --header 'Content-Type: application/json' --data-raw '{
+#  "username": "alertapba",
+#  "password": "sdnadmin4"
+#}'
+POST https://realm.mongodb.com/api/client/v2.0/app/data-xzxhz/auth/providers/local-userpass/login
+Content-Type: application/json
+
+{
+  "username": "alertapba",
+  "password": "sdnadmin4"
+}
+
+###
+
+# curl --location --request POST 'https://sa-east-1.aws.data.mongodb-api.com/app/data-xzxhz/endpoint/data/v1/action/findOne'
+#--header 'Content-Type: application/json'
+#--header 'Access-Control-Request-Headers: *'
+#--header 'Authorization: Bearer <ACCESS_TOKEN>'
+#--data-raw '{
+#    "collection":"<COLLECTION_NAME>",
+#    "database":"<DATABASE_NAME>",
+#    "dataSource":"Cluster0",
+#    "projection": {"_id": 1}
+#}'
+POST https://sa-east-1.aws.data.mongodb-api.com/app/data-xzxhz/endpoint/data/v1/action/findOne
+Access-Control-Request-Headers: *
+Authorization: Bearer <ACCESS_TOKEN>
+Content-Type: application/json
+
+{
+  "collection": "<COLLECTION_NAME>",
+  "database": "<DATABASE_NAME>",
+  "dataSource": "Cluster0",
+  "projection": {
+    "_id": 1
+  }
+}
+
+###
+

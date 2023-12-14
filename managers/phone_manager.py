@@ -1,6 +1,8 @@
 from dash.types import GeoPoint, Place, Phone
 import dash.places.api as places_api
 import dash.phones.api as phones_api
+from pusher import pusher_client
+from pusher.client import PushForm
 
 
 def trigger_alarm(phone_id: str, trigger_form: dict):
@@ -13,15 +15,14 @@ def trigger_alarm(phone_id: str, trigger_form: dict):
 
 
 def refresh_token(phone_id: str, token: str):
-    print("[ phone_manager ] refresh token :", phone_id, token)
+    # print("[ phone_manager ] refresh token :", phone_id, token)
     phones_api.update_token(phone_id, token)
     return True
 
 
 def add_new_phone(new_phone_form: dict):
-    print("[ phone_manager ] a new phone :", new_phone_form)
+    # print("[ phone_manager ] a new phone :", new_phone_form)
 
-    print("[ phone_manager ] geopoint :", new_phone_form.get("geopoint"))
     geo_point = GeoPoint(
         type="Point",
         coordinates=[
@@ -49,3 +50,21 @@ def add_new_phone(new_phone_form: dict):
     phone_stored = phones_api.add_new_phone(new_phone)
 
     return [phone_stored, place_stored]
+
+
+def ask_phone_number(phone_id, token):
+    # send a push notification to the phone
+    # invite to talk by whatsapp
+    form = PushForm(
+        token=token,
+        title="Bienvenido Vecino!",
+        message="Felicitaciones, charlemos por whatsapp para presentarnos.",
+        data={
+            'message_type': 'greeting_talk',
+            'has_phone': False,
+            'contact_number': '5491128835917'
+        }
+    )
+
+    pusher_client.push(form)
+    return None

@@ -40,14 +40,14 @@ def get_place_by_id(place_id: str):
 
 
 def add_new_place(new_place: Place):
-    print("[ place_api ] a new place :", new_place)
+    # print("[ place_api ] a new place :", new_place)
 
     # make payload from new_place avoid None values
     payload = {}
     for key, value in new_place.dict().items():
         if value is not None:
             payload[key] = value
-    print("[ place_api ] payload :", payload)
+    # print("[ place_api ] payload :", payload)
     response = requests.post(PLACE_URL, json=payload)
     if response.status_code == 200:
         new_place.id = response.json().get("data").get("id")

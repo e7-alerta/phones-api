@@ -10,7 +10,7 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Hello phones v1.3"}
 
 
 @app.get("/hello/{name}")
@@ -32,13 +32,26 @@ async def say_hello(phone_id: str):
     }
 
 
+class AskPhoneNumberForm(BaseModel):
+    phone_id: str
+    token: str
+
+
+@app.post("/api/v1/phones/hooks/ask_phone_number")
+async def ask_phone_number_hook(form: dict):
+    ask_form = AskPhoneNumberForm(phone_id=form["phone_id"], token=form["changes"]["push_token"])
+    print("[ api/v1/phones/hooks/ask_phone_number ] ask phone number |", ask_form)
+    phone_manager.ask_phone_number(ask_form.phone_id, ask_form.token)
+    return ask_form.model_dump()
+
+
 class RefreshTokenForm(BaseModel):
     token: str
 
 
 @app.patch("/api/v1/phones/{phone_id}/token/refresh")
 async def update_token(phone_id: str, refresh_form: RefreshTokenForm):
-    print("update token :", phone_id, refresh_form)
+    print("[ /api/v1/phones/{phone_id}/token/refresh ] update token | ", phone_id, refresh_form)
     phone_manager.refresh_token(phone_id, refresh_form.token)
     return {
         "data": {
@@ -69,7 +82,7 @@ async def trigger_alarm(phone_id: str, trigger_form: TriggerAlarmForm):
 
 @app.post("/api/v1/phones/new")
 async def new_phone(new_phone_form: dict):
-    print("a new device :", new_phone_form)
+    print("[ /api/v1/phones/new ] a new device | ", new_phone_form)
 
     if new_phone_form.get("country_code") == "US":
         return {
@@ -81,13 +94,23 @@ async def new_phone(new_phone_form: dict):
 
     # si el street number es None, entonces pongo 0
     if new_phone_form.get("street_number") is None:
-        new_phone_form["street_number"] = 0
+        new_phone_form["street_number"] = "0"
     # si el street number es tiene - entonces lo separo y me quedo con el primero
     if "-" in new_phone_form.get("street_number"):
         new_phone_form["street_number"] = new_phone_form.get("street_number").split("-")[0]
     # si el street number es tiene caracteres no numericos, entonces los elimino
     if not new_phone_form.get("street_number").isnumeric():
-        new_phone_form["street_number"] = "".join([char for char in new_phone_form.get("street_number") if char.isnumeric()])
+        new_phone_form["street_number"] = "".join(
+            [char for char in new_phone_form.get("street_number") if char.isnumeric()])
+
+    if new_phone_form.get("street") is None:
+        new_phone_form["street"] = ""
+
+    if new_phone_form.get("city") is None:
+        new_phone_form["city"] = ""
+
+    if new_phone_form.get("subregion") is None:
+        new_phone_form["subregion"] = ""
 
     [phone, place] = phone_manager.add_new_phone(new_phone_form)
 
