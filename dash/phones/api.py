@@ -31,6 +31,23 @@ def get_phone_by_id(phone_id: str):
     return phone
 
 
+def alert_phone(phone_id: str, alert_type: str):
+    # print("[ phone_api ] refresh token :", phone_id, token)
+    response = requests.patch(
+        PHONE_URL + "/" + phone_id,
+        headers=HEADERS,
+        json={
+            "alerted": True,
+            "status": "alerted",
+            "alert_type": alert_type
+        }
+    )
+    if not response.status_code == 200:
+        print("[ phone_api ] error :", response.status_code, response.json())
+        return None
+    return True
+
+
 def update_token(phone_id: str, token: str):
     # print("[ phone_api ] refresh token :", phone_id, token)
     response = requests.patch(

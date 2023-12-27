@@ -4,6 +4,7 @@ from typing import Optional
 
 from managers import phone_manager
 from managers import place_manager
+from managers.phone_manager import TriggerAlarmForm
 
 app = FastAPI()
 
@@ -59,14 +60,6 @@ async def update_token(phone_id: str, refresh_form: RefreshTokenForm):
         }
     }
 
-
-class TriggerAlarmForm(BaseModel):
-    # phone_id: Optional[str]
-    id: Optional[str]
-    geopoint: Optional[dict]
-    alert_type: Optional[str]
-    alerted: Optional[bool]
-    status: Optional[str]
 
 
 @app.post("/api/v1/phones/{phone_id}/alerts/trigger")

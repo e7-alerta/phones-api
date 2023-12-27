@@ -1,16 +1,29 @@
+from typing import Optional
+
 from dash.types import GeoPoint, Place, Phone
 import dash.places.api as places_api
 import dash.phones.api as phones_api
 from pusher import pusher_client
+from pydantic import BaseModel
 from pusher.client import PushForm
 
 
-def trigger_alarm(phone_id: str, trigger_form: dict):
+class TriggerAlarmForm(BaseModel):
+    # phone_id: Optional[str]
+    id: Optional[str] = None
+    geopoint: Optional[dict] = None
+    alert_type: Optional[str] = None
+    alerted: Optional[bool] = None
+    status: Optional[str] = None
+
+
+def trigger_alarm(phone_id: str, trigger_form: TriggerAlarmForm = None):
     print("[ phone_manager ] trigger alarm :", phone_id, trigger_form)
     phone = phones_api.get_phone_by_id(phone_id)
     print("[ phone_manager ] phone :", phone)
     # place = places_api.get_place_by_id(phone.place.id)
     # print("[ phone_manager ] place :", place)
+    phones_api.alert_phone(phone_id=phone_id, alert_type=trigger_form.alert_type)
     return True
 
 
